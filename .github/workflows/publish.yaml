@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: cdxgen
+  IMAGE_NAME: ${{ github.actor }}/cdxgen
 
 jobs:
   build-and-push-image:
