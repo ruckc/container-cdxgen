@@ -2,4 +2,5 @@
 
 git clone $GIT_URL repo
 cdxgen -o bom.xml repo
-
+echo "$SPLITSTRING"
+cat bom.xml
