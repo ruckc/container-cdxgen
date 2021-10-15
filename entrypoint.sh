@@ -2,5 +2,6 @@
 
 git clone $GIT_URL repo
 cdxgen -o bom.xml repo
-echo "$SPLITSTRING"
-cat bom.xml
+if [ "${BOM_UPLOAD_URL}" != "" ]; then
+  curl -v -XPOST "$BOM_UPLOAD_URL"
+fi
