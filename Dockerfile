@@ -4,7 +4,7 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install git nodejs npm -y && \
+    apt-get install git nodejs npm curl -y && \
     apt-get clean && \
     npm install -g @appthreat/cdxgen && \
     mkdir /data && \
