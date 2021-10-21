@@ -4,7 +4,9 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install git nodejs npm curl -y && \
+    apt-get install git curl -y && \
+    curl -fsSL https://deb.nodesource.com/setup_17.x | bash - && \
+    apt-get install -y nodejs && \
     apt-get clean && \
     npm install -g @appthreat/cdxgen && \
     mkdir /data && \
