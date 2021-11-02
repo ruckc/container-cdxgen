@@ -4,7 +4,8 @@ set -e
 set -x
 
 echo "===== GIT CLONE ====="
-git clone $GIT_URL
+git clone $GIT_URL repo
+cd repo
 for REF in $(echo ${GIT_REFS} | sed "s/,/ /g"); do
   git checkout $REF
   cdxgen -o bom.json repo
