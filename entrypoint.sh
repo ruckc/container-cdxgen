@@ -4,10 +4,14 @@ set -e
 set -x
 
 echo "===== GIT CLONE ====="
-git clone $GIT_URL repo
-echo "===== CDXGEN    ====="
-cdxgen -o bom.json repo
-if [ "${BOM_UPLOAD_URL}" != "" ]; then
-  echo "===== CURL UP   ===== $BOM_UPLOAD_URL"
-  curl -v -XPOST "$BOM_UPLOAD_URL" -d @bom.json
-fi
+git clone $GIT_URL
+for REF in $(echo ${GIT_REFS} | sed "s/,/ /g"); do
+  git checkout $REF
+  cdxgen -o bom.json repo
+  if [ "${BOM_BASE_UPLOAD_URL}" != "" ]; then
+    URL="${BOM_BASE_UPLOAD_URL}/${REF}"
+    echo "===== CURL UP   ===== $URL"
+    curl -v -XPOST "$URL" -d @bom.json
+  fi
+  rm bom.json
+done
