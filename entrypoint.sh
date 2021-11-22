@@ -8,7 +8,7 @@ git clone $GIT_URL repo
 cd repo
 for REF in $(echo ${GIT_REFS} | sed "s/,/ /g"); do
   git checkout $REF
-  cdxgen -o bom.json .
+  cdxgen -r -o bom.json .
   ls -latr
   if [ -f "bom.json" ]; then
     echo "Unable to find generated bom.json"
