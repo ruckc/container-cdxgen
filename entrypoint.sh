@@ -25,5 +25,5 @@ for REF in $(echo ${GIT_REFS} | sed "s/,/ /g"); do
       curl --fail -v -XPOST "$URL" -H "Content-Type: application/json" -d @bom.json && SUCCESS=1 || sleep 5
     done
   fi
-  rm bom.json
+  rm -rv bom.json bom.xml
 done
