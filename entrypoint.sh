@@ -6,6 +6,9 @@ set -x
 echo "===== GIT CLONE ====="
 git clone $GIT_URL repo
 cd repo
+
+GIT_REFS=$(curl --fail -v -XGET "${BOM_URL}" | jq -r '.hash[]')
+
 for REF in $(echo ${GIT_REFS} | sed "s/,/ /g"); do
   git checkout $REF
   cdxgen -r -o bom.json .
