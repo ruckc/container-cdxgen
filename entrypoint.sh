@@ -15,7 +15,7 @@ for REF in $(echo ${GIT_REFS} | sed "s/,/ /g"); do
   ls -latr
   if [ ! -f "bom.json" ]; then
     echo "Unable to find generated bom.json"
-    exit 1
+    continue 
   fi
   if [ "${BOM_BASE_UPLOAD_URL}" != "" ]; then
     URL="${BOM_BASE_UPLOAD_URL}/${REF}"
