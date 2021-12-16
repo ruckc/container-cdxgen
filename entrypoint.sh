@@ -11,7 +11,8 @@ GIT_REFS=$(curl --fail -v -XGET "${BOM_URL}" | jq -r '.hash[]')
 
 for REF in $(echo ${GIT_REFS} | sed "s/,/ /g"); do
   git -c advice.detachedHead=false checkout $REF
-  cdxgen -r -o bom.json . 2>&1 | tee output.txt
+  echo "cdxgen output:" > output.txt
+  cdxgen -r -o bom.json . 2>&1 | tee -a output.txt
   ls -latr
   if [ ! -f "bom.json" ]; then
     echo "Unable to find generated bom.json"
