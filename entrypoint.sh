@@ -16,11 +16,11 @@ for REF in $(echo ${GIT_REFS} | sed "s/,/ /g"); do
   if [ ! -f "bom.json" ]; then
     echo "Unable to find generated bom.json"
     URL="${BOM_BASE_UPLOAD_URL}/${REF}/error"
-    SUCCESS=0
-    while [ $SUCCESS -ne 1 ]; do
+    #SUCCESS=0
+    #while [ $SUCCESS -ne 1 ]; do
       echo "===== CURL ERR UP ===== $URL"
-      echo "${ERRORS}" | curl -v -XPOST "$URL" -H "Content-Type: text/plain" -T -
-    done
+      echo "${ERRORS}" | curl --fail -v -XPOST "$URL" -H "Content-Type: text/plain" -T -
+    #done
   fi
   if [ "${BOM_BASE_UPLOAD_URL}" != "" ]; then
     URL="${BOM_BASE_UPLOAD_URL}/${REF}"
