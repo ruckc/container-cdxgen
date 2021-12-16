@@ -21,6 +21,7 @@ for REF in $(echo ${GIT_REFS} | sed "s/,/ /g"); do
       echo "===== CURL ERR UP ===== $URL"
       echo "${ERRORS}" | curl --fail -v -XPOST "$URL" -H "Content-Type: text/plain" -T -
     #done
+    continue
   fi
   if [ "${BOM_BASE_UPLOAD_URL}" != "" ]; then
     URL="${BOM_BASE_UPLOAD_URL}/${REF}"
