@@ -11,26 +11,26 @@ GIT_REFS=$(curl --fail -v -XGET "${BOM_URL}" | jq -r '.hash[]')
 
 for REF in $(echo ${GIT_REFS} | sed "s/,/ /g"); do
   git -c advice.detachedHead=false checkout $REF
-  COMMIT_DATE=$(git show -s --format=%cI)
+  COMMIT_DATE=$(git show -s --format=%cI | jq -sRr @uri)
   echo "cdxgen output:" > output.txt
   cdxgen -r -o bom.json . 2>&1 | tee -a output.txt
   ls -latr
   if [ ! -f "bom.json" ]; then
     echo "Unable to find generated bom.json"
-    URL="${BOM_BASE_UPLOAD_URL}/${REF}/error"
+    URL="${BOM_BASE_UPLOAD_URL}/${REF}/error?commitTimestamp=${COMMIT_DATE}"
     SUCCESS=0
     while [ $SUCCESS -ne 1 ]; do
       echo "===== CURL ERR UP ===== $URL"
-      echo "${ERRORS}" | curl --fail -v -XPOST "$URL" -G --data-urlencode "commitTimestamp=${COMMIT_DATE}" -H "Content-Type: text/plain" -d @output.txt && SUCCESS=1 || sleep 5
+      echo "${ERRORS}" | curl --fail -v -XPOST "$URL" -H "Content-Type: text/plain" -d @output.txt && SUCCESS=1 || sleep 5
     done
     continue
   fi
   if [ "${BOM_BASE_UPLOAD_URL}" != "" ]; then
-    URL="${BOM_BASE_UPLOAD_URL}/${REF}"
+    URL="${BOM_BASE_UPLOAD_URL}/${REF}?commitTimestamp=${COMMIT_DATE}"
     SUCCESS=0
     while [ $SUCCESS -ne 1 ]; do
       echo "===== CURL UP     ===== $URL"
-      curl --fail -v -XPOST "$URL" -G --data-urlencode "commitTimestamp=${COMMIT_DATE}" -H "Content-Type: application/json" -d @bom.json && SUCCESS=1 || sleep 5
+      curl --fail -v -XPOST "$URL" -H "Content-Type: application/json" -d @bom.json && SUCCESS=1 || sleep 5
     done
   fi
   rm -rv bom.json bom.xml output.txt
