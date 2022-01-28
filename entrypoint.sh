@@ -26,7 +26,7 @@ for REF in $(echo ${GIT_REFS} | sed "s/,/ /g"); do
     continue
   fi
   if [ "${BOM_BASE_UPLOAD_URL}" != "" ]; then
-    URL="${BOM_BASE_UPLOAD_URL}/${REF}?commitTimestamp=${COMMIT_DATE}"
+    URL="${BOM_BASE_UPLOAD_URL}/${REF}"
     SUCCESS=0
     while [ $SUCCESS -ne 1 ]; do
       echo "===== CURL UP     ===== $URL"
